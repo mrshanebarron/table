@@ -40,7 +40,7 @@
 import { ref, computed } from 'vue';
 
 export default {
-  name: 'LdTable',
+  name: 'SbTable',
   props: {
     columns: { type: Array, default: () => [] },
     data: { type: Array, default: () => [] },
