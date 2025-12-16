@@ -8,7 +8,7 @@ class TableServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/table.php', 'sb-table');
+        $this->mergeConfigFrom(__DIR__ . '/../config/sb-table.php', 'sb-table');
     }
 
     public function boot(): void
@@ -21,7 +21,7 @@ class TableServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/table.php' => config_path('sb-table.php'),
+                __DIR__ . '/../config/sb-table.php' => config_path('sb-table.php'),
             ], 'sb-table-config');
         }
     }
