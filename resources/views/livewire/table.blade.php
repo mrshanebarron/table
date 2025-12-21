@@ -1,31 +1,31 @@
 <div>
-    @if($searchable)
-    <div class="mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
-            placeholder="Search..." 
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    @if($this->searchable)
+    <div style="margin-bottom: 16px;">
+        <input
+            type="text"
+            wire:model.live.debounce.300ms="search"
+            placeholder="Search..."
+            style="width: 100%; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;"
         >
     </div>
     @endif
 
-    <div class="overflow-x-auto">
-        <table class="{{ config('sb-table.classes.table') }} @if($bordered) {{ config('sb-table.classes.bordered') }} @endif">
-            <thead class="{{ config('sb-table.classes.thead') }}">
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; {{ $this->bordered ? 'border: 1px solid #e5e7eb;' : '' }}">
+            <thead style="background: #f9fafb;">
                 <tr>
-                    @foreach($columns as $key => $label)
-                    <th 
-                        class="{{ config('sb-table.classes.th') }} @if($sortable) cursor-pointer hover:bg-gray-100 @endif"
-                        @if($sortable) wire:click="sortBy('{{ $key }}')" @endif
+                    @foreach($this->columns as $key => $label)
+                    <th
+                        style="padding: 12px 24px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; color: #6b7280; {{ $this->bordered ? 'border: 1px solid #e5e7eb;' : 'border-bottom: 1px solid #e5e7eb;' }} {{ $this->sortable ? 'cursor: pointer;' : '' }}"
+                        @if($this->sortable) wire:click="sortBy('{{ $key }}')" @endif
                     >
-                        <div class="flex items-center gap-2">
+                        <div style="display: flex; align-items: center; gap: 8px;">
                             {{ $label }}
-                            @if($sortable && $sortBy === $key)
-                                @if($sortDirection === 'asc')
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                            @if($this->sortable && $this->sortBy === $key)
+                                @if($this->sortDirection === 'asc')
+                                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
                                 @else
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 @endif
                             @endif
                         </div>
@@ -33,18 +33,18 @@
                     @endforeach
                 </tr>
             </thead>
-            <tbody class="{{ config('sb-table.classes.tbody') }}">
-                @forelse($filteredData as $row)
-                <tr class="@if($striped) {{ config('sb-table.classes.striped') }} @endif @if($hoverable) {{ config('sb-table.classes.hoverable') }} @endif">
-                    @foreach($columns as $key => $label)
-                    <td class="{{ config('sb-table.classes.td') }} @if($compact) {{ config('sb-table.classes.compact') }} @endif">
+            <tbody>
+                @forelse($this->filteredData as $rowIndex => $row)
+                <tr style="{{ $this->striped && $rowIndex % 2 === 1 ? 'background: #f9fafb;' : '' }} {{ $this->hoverable ? 'transition: background 0.15s;' : '' }}" @if($this->hoverable) onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='{{ $this->striped && $rowIndex % 2 === 1 ? '#f9fafb' : 'transparent' }}'" @endif>
+                    @foreach($this->columns as $key => $label)
+                    <td style="padding: {{ $this->compact ? '8px 24px' : '16px 24px' }}; {{ $this->bordered ? 'border: 1px solid #e5e7eb;' : 'border-bottom: 1px solid #e5e7eb;' }}">
                         {{ $row[$key] ?? '' }}
                     </td>
                     @endforeach
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="{{ count($columns) }}" class="px-6 py-4 text-center text-gray-500">
+                    <td colspan="{{ count($this->columns) }}" style="padding: 16px 24px; text-align: center; color: #6b7280;">
                         No data available
                     </td>
                 </tr>
